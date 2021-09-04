@@ -1,0 +1,977 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    
+
+    
+    <title>create organisations</title>
+
+    <style>
+    
+
+    #org_members
+    {
+      margin-left:630px;
+      margin-top:-53px;
+      border: 1px solid transparent ;
+      border-top-bottom:transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      
+    }
+    .members_with_role 
+    {
+      margin-left:180px;
+      width:700px;
+      margin-top:20px;
+    }
+    
+    #members_button
+    {
+      margin-left:540px;
+      margin-top:-40px;
+      
+      
+    }  
+    #members_fetched ul
+    {
+      overflow-y: scroll;
+      max-height: 250px;
+    }
+    #details_org
+    {
+      margin-left:180px;
+
+    }
+    #org_results
+    {
+      float:right;
+      margin-right:200px;
+      width: 800px;
+      height: 800px;
+      border: 0px solid black;
+      background-color: #FFFFFF;
+      border-radius: 10px;
+      padding-top: 20px;
+      padding-left: 30px;
+       margin-top: 30px;
+       z-index: 1;
+       min-height: 100%;
+       grid-template-rows: 1fr auto;
+    }
+    #create_org
+    {
+      margin-top:30px;margin-left:30px;position:absolute
+    }
+    #error
+    {
+      width:300px;
+      margin-left:300px
+    }
+    #org_form
+    {
+      margin-left:300px;
+      width:800px;
+    }
+    #logo_input
+      {
+        margin-left:15px;
+        width:500px;
+      }
+      #org_save_btn
+      {
+        text-align:center;margin-top:30px;margin-right:230px;
+      }
+
+      /*when owner visits organinsation page*/
+      #update_field
+      {
+        margin-left:230px;
+      }
+      .logo_of_org
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+        cursor:pointer;
+      }
+      #name_of_org
+      {
+        margin-left:90px;
+        margin-top:50px;
+      }
+      #details_of_org
+      {
+        margin-left:100px;
+      }
+      #city_of_org
+      {
+        margin-left:100px;
+      }
+      #state_of_org
+      {
+        margin-left:260px;
+        margin-top:-45px;
+      }
+      #country_of_org
+      {
+        margin-left:440px;
+        margin-top:-46px;
+      }
+      #update_btn
+      {
+        float:right;
+         margin-right:300px;
+         margin-top:-150px;
+      }
+
+      /*modals*/
+
+      #members_visit
+      {
+        margin-left:630px;
+        margin-top:-52px;
+      }
+      #delete_org
+      {
+        float:right;
+         margin-right:300px;
+         margin-top:-200px;
+      }
+      #add_user_modal
+      {
+        float:right;
+        margin-right:300px;
+        margin-top:-240px;
+      }
+
+      /*when others visit organisations page*/
+      #details
+      {
+        margin-left:230px;
+      }
+
+      .logo_unchanged
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+      }
+      #name_unchanged
+      {
+        margin-left:100px;
+        margin-top:50px;
+      }
+      #description_unchanged
+      {
+        margin-left:100px;
+      }
+      #owner
+      {
+        margin-left:100px;
+      }
+      #city_unchanged
+      {
+        margin-left:100px;
+      }
+      #state_unchanged
+      {
+        margin-left:230px;
+        margin-top:-40px;
+      }
+      #country_unchanged
+      {
+        margin-left:400px;
+        margin-top:-40px;
+      }
+      #members_cnt
+      {
+        margin-left:540px;
+        margin-top:-40px;
+      }
+      #confirm_delete
+      {
+        margin-top:100px;
+      }
+      #confirm_delete p
+      {
+        text-align:center;
+        margin-top:10px;
+        font-weight:bold;
+      }
+
+    @media screen and (max-width: 1200px){
+      .members_with_role 
+    {
+      margin-left:100px;
+      width:600px;
+      margin-top:20px;
+    }
+      #save_btn
+      {
+        margin-top:300px;
+      }
+      #org_results
+      {
+        margin-right:10px;
+        margin-top: 100px;
+        width: 600px;
+      }
+      #error
+      {
+      width:300px;
+      margin-left:200px
+      }
+      #org_form
+      {
+        width:700px;
+        margin-left:170px;
+      }
+      #logo_input
+      {
+        margin-left:15px;
+        width:420px;
+      }
+      #org_save_btn
+      {
+        text-align:center;
+        margin-top:30px;
+        margin-right:10px;
+        
+      } 
+      #update_field
+      {
+        margin-left:100px;
+      }
+      .logo_of_org
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+        cursor:pointer;
+      }
+      #name_of_org
+      {
+        margin-left:90px;
+        margin-top:50px;
+      }
+      #details_of_org
+      {
+        margin-left:100px;
+      }
+      #city_of_org
+      {
+        margin-left:40px;
+      }
+      #state_of_org
+      {
+        margin-left:200px;
+        margin-top:-45px;
+      }
+      #country_of_org
+      {
+        margin-left:360px;
+        margin-top:-46px;
+      }
+      #update_btn
+      {
+        float:right;
+         margin-right:100px;
+         margin-top:-130px;
+      }
+
+      /*modals*/
+
+      #members_visit
+      {
+        margin-left:530px;
+        margin-top:-52px;
+      }
+      #delete_org
+      {
+        float:right;
+         margin-right:100px;
+         margin-top:-200px;
+      }
+      #add_user_modal
+      {
+        float:right;
+        margin-right:100px;
+        margin-top:-240px;
+      }
+
+      /*when others visit organisations page*/
+      #details
+      {
+        margin-left:100px;
+      }
+
+      .logo_unchanged
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+      }
+      #name_unchanged
+      {
+        margin-left:100px;
+        margin-top:50px;
+      }
+      #description_unchanged
+      {
+        margin-left:100px;
+      }
+      #owner
+      {
+        margin-left:100px;
+      }
+      #city_unchanged
+      {
+        margin-left:100px;
+      }
+      #state_unchanged
+      {
+        margin-left:230px;
+        margin-top:-40px;
+      }
+      #country_unchanged
+      {
+        margin-left:400px;
+        margin-top:-40px;
+      }
+      #members_cnt
+      {
+        margin-left:540px;
+        margin-top:-40px;
+      }    
+    }
+    @media screen and (max-width: 600px){
+      .members_with_role 
+    {
+      margin-left:-20px;
+      width:350px;
+      margin-top:20px;
+    }
+      #save_btn
+      {
+        margin-top:1000px;
+      }
+      #org_results
+      {
+        margin-right:10px;
+        margin-top: 100px;
+        width: 400px;
+        
+      }
+      #confirm_delete
+      {
+        margin-top:100px;
+
+      }
+      #confirm_delete p
+      {
+        float: :right;
+        margin-top:10px;
+        font-weight:bold;
+      }
+      #error
+      {
+      width:300px;
+      margin-left:100px
+      }
+      #org_form
+      {
+        margin-left:50px;
+        width:400px;
+      }
+      #logo_input
+      {
+        margin-left:15px;
+        width:350px;
+      }
+      #org_save_btn
+      {
+        text-align:center;
+        margin-top:30px;
+        margin-right:0px;
+      }
+
+
+      #update_field
+      {
+        margin-left:50px;
+      }
+      .logo_of_org
+      {
+        margin-top: 20px;
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+        cursor:pointer;
+      }
+      #name_of_org
+      {
+        margin-left:90px;
+        margin-top:70px;
+      }
+      #details_of_org
+      {
+        margin-left:100px;
+      }
+      #city_of_org
+      {
+        margin-left:100px;
+      }
+      #state_of_org
+      {
+        margin-left:100px;
+        margin-top:5px;
+      }
+      #country_of_org
+      {
+        margin-left:100px;
+        margin-top:5px;
+      }
+      #update_btn
+      {
+        float:right;
+         margin-right:330px;
+         margin-top:-360px;
+      }
+
+      /*modals*/
+
+      #members_visit
+      {
+        margin-left:100px;
+        margin-top:20px;
+      }
+      #delete_org
+      {
+        float:right;
+         margin-right:260px;
+         margin-top:-415px;
+      }
+      #add_user_modal
+      {
+        float:right;
+        margin-right:100px;
+        margin-top:-410px;
+      }
+
+      /*when others visit organisations page*/
+      #details
+      {
+        margin-left:50px;
+      }
+
+      .logo_unchanged
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+      }
+      #name_unchanged
+      {
+        margin-left:100px;
+        margin-top:50px;
+      }
+      #description_unchanged
+      {
+        margin-left:100px;
+      }
+      #owner
+      {
+        margin-left:100px;
+      }
+      #city_unchanged
+      {
+        margin-left:100px;
+      }
+      #state_unchanged
+      {
+        margin-left:100px;
+        margin-top:5px;
+      }
+      #country_unchanged
+      {
+        margin-left:100px;
+        margin-top:20px;
+      }
+      #members_cnt
+      {
+        margin-left:100px;
+        margin-top:40px;
+      }
+
+     
+
+    }
+
+    /*when owner visits organinsation page*/
+      #update_field_members
+      {
+        margin-left:230px;
+      }
+      .logo_members_page
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+        cursor:pointer;
+      }
+      #org_name_members
+      {
+        margin-left:90px;
+        margin-top:80px;
+      }
+      #org_description_members
+      {
+        margin-left:100px;
+      }
+      #org_city_members
+      {
+        margin-left:100px;
+      }
+      #org_state_members
+      {
+        margin-left:260px;
+        margin-top:-45px;
+      }
+      #org_country_members
+      {
+        margin-left:440px;
+        margin-top:-46px;
+      }
+      #update_btn_members
+      {
+        float:right;
+        margin-right:300px;
+        margin-top:-150px;
+      }
+
+      /*modals*/
+
+      #org_members
+      {
+        margin-left:630px;
+        margin-top:-52px;
+      }
+      #delete_org_members_page
+      {
+        float:right;
+        margin-right:300px;
+        margin-top:-100px;
+      }
+      #add_user_modal_members
+      {
+        float:right;
+        margin-right:300px;
+        margin-top:-240px;
+      }
+
+      /*when others visit organisations page*/
+      #details_members
+      {
+        margin-left:230px;
+      }
+
+      .logo_unchanged_members
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+      }
+      #name_unchanged_members
+      {
+        margin-left:100px;
+        margin-top:50px;
+      }
+      #description_unchanged_members
+      {
+        margin-left:100px;
+      }
+      #owner_members
+      {
+        margin-left:100px;
+      }
+      #city_unchanged_members
+      {
+        margin-left:100px;
+      }
+      #state_unchanged_members
+      {
+        margin-left:230px;
+        margin-top:-40px;
+      }
+      #country_unchanged_members
+      {
+        margin-left:400px;
+        margin-top:-40px;
+      }
+      #members_button_members
+      {
+        margin-left:540px;
+        margin-top:-40px;
+      }
+
+    @media screen and (max-width: 1200px){
+     
+      #save_btn
+      {
+        margin-top:300px;
+      }
+      #details_org
+    {
+      margin-left:60px;
+
+    }
+      #org_results
+      {
+        margin-right:10px;
+        margin-top: 100px;
+        width: 600px;
+      }
+      #error
+      {
+      width:300px;
+      margin-left:200px
+      }
+      #org_form
+      {
+        width:700px;
+        margin-left:170px;
+      }
+      #logo_input
+      {
+        margin-left:15px;
+        width:420px;
+      }
+      #org_save_btn
+      {
+        text-align:center;
+        margin-top:30px;
+        margin-right:10px;
+        
+      } 
+      #update_field_members
+      {
+        margin-left:100px;
+      }
+      .logo_members_page
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+        cursor:pointer;
+      }
+      #org_name_members
+      {
+        margin-left:90px;
+        margin-top:50px;
+      }
+      #org_description_members
+      {
+        margin-left:100px;
+      }
+      #org_city_members
+      {
+        margin-left:40px;
+      }
+      #org_state_members
+      {
+        margin-left:200px;
+        margin-top:-45px;
+      }
+      #org_country_members
+      {
+        margin-left:360px;
+        margin-top:-46px;
+      }
+      #update_btn_members
+      {
+        float:right;
+         margin-right:100px;
+         margin-top:-130px;
+      }
+
+      /*modals*/
+
+      #org_members
+      {
+        margin-left:530px;
+        margin-top:-52px;
+      }
+      #delete_org_members_page
+      {
+        float:right;
+         margin-right:100px;
+         margin-top:-200px;
+      }
+      #add_user_modal_members
+      {
+        float:right;
+        margin-right:100px;
+        margin-top:-240px;
+      }
+
+      /*when others visit organisations page*/
+      #details_members
+      {
+        margin-left:100px;
+      }
+
+      .logo_unchanged_members
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+      }
+      #name_unchanged_members
+      {
+        margin-left:100px;
+        margin-top:50px;
+      }
+      #description_unchanged_members
+      {
+        margin-left:100px;
+      }
+      #owner_members
+      {
+        margin-left:100px;
+      }
+      #city_unchanged_members
+      {
+        margin-left:100px;
+      }
+      #state_unchanged_members
+      {
+        margin-left:230px;
+        margin-top:-40px;
+      }
+      #country_unchanged_members
+      {
+        margin-left:400px;
+        margin-top:-40px;
+      }
+      #members_button_members
+      {
+        margin-left:540px;
+        margin-top:-40px;
+      }    
+    }
+    @media screen and (max-width: 600px){
+      #save_btn
+      {
+        margin-top:1000px;
+      }
+      #details_org
+      {
+      margin-left:-30px;
+
+      }
+      #org_results
+      {
+        margin-right:10px;
+        margin-top: 100px;
+        width: 400px;
+        
+      }
+      #error
+      {
+      width:300px;
+      margin-left:100px;
+      }
+      #org_form
+      {
+        margin-left:50px;
+        width:400px;
+      }
+      #logo_input
+      {
+        margin-left:15px;
+        width:350px;
+      }
+      #org_save_btn
+      {
+        text-align:center;
+        margin-top:30px;
+        margin-right:0px;
+      }
+
+
+      #update_field_members
+      {
+        margin-left:50px;
+        margin-top: 30px;
+      }
+      .logo_members_page
+      {
+        margin-top: 20px;
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+        cursor:pointer;
+      }
+      #org_name_members
+      {
+        margin-left:90px;
+        margin-top:70px;
+      }
+      #org_description_members
+      {
+        margin-left:100px;
+      }
+      #org_city_members
+      {
+        margin-left:100px;
+      }
+      #org_state_members
+      {
+        margin-left:100px;
+        margin-top:5px;
+      }
+      #org_country_members
+      {
+        margin-left:100px;
+        margin-top:5px;
+      }
+      #update_btn_members
+      {
+        float:right;
+         margin-right:330px;
+         margin-top:-350px;
+      }
+
+      /*modals*/
+
+      #org_members
+      {
+        margin-left:100px;
+        margin-top:20px;
+      }
+      #delete_org_members_page
+      {
+        float:right;
+        margin-right:260px;
+        margin-top:-410px;
+      }
+      #add_user_modal_members
+      {
+        float:right;
+        margin-right:100px;
+        margin-top:-400px;
+      }
+
+      /*when others visit organisations page*/
+      #details_members
+      {
+        margin-left:50px;
+      }
+
+      .logo_unchanged_members
+      {
+        margin-left:5px;
+        position:absolute;
+        width:60px;
+      }
+      #name_unchanged_members
+      {
+        margin-left:100px;
+        margin-top:50px;
+      }
+      #description_unchanged_members
+      {
+        margin-left:100px;
+      }
+      #owner_members
+      {
+        margin-left:100px;
+      }
+      #city_unchanged_members
+      {
+        margin-left:100px;
+      }
+      #state_unchanged_members
+      {
+        margin-left:100px;
+        margin-top:5px;
+      }
+      #country_unchanged_members
+      {
+        margin-left:100px;
+        margin-top:20px;
+      }
+      #members_button_members
+      {
+        margin-left:100px;
+        margin-top:40px;
+      }
+
+     
+
+    }
+    
+    </style>
+  </head>
+  <body>
+
+  <!-- Image and text -->
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'create_org:landing' %}">
+    Piblitz
+  </a>
+  
+  <span style="margin-left: auto;" class="navbar-text">
+     <a style="text-decoration: none;" class="navbar-text" id="organisations_page"  href="{% url 'create_org:view_org' %}"> Organisations</a>
+    </span>
+  
+  
+  <form class="form-inline"  method="POST" action="{% url 'create_org:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Logout</button>
+    </form>
+</nav>
+
+
+  
+    
+  
+    
+    
+  
+  {% block content %}
+    {% endblock %}
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

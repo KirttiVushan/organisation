@@ -1,0 +1,194 @@
+{% extends 'create_org/base.html' %} 
+
+{% block content %}
+
+
+{% if request.user == details.owner %}
+
+<!-- When owner is in this page -->
+
+<div class="container" id="update_field">
+
+<form method="POST" enctype = "multipart/form-data">
+
+{% if details.logo %}
+    <img class="logo_of_org" style="" src="{{details.logo.url}}" onclick = "file_upload()";><input style="display: none;" type ="file" name="logo" id ="file" value="{{details.logo.url}}">
+{% else %}
+    {% load static %}
+    <img class="logo_of_org" style="margin-left:5px;position:absolute;width:80px;cursor:pointer; " onclick = "file_upload()"; src="{% static 'piblitz_org/images/org_null.png' %}"><input style="display: none;" name="logo" type = "file" id = "file">
+{% endif %}
+
+<h3 id="name_of_org" ><input style=" border:none;border-width:0px;-webkit-appearance:none;width:300px;font-size:25px;" type="text" name="name" class="form-control form-control-lg" value="{{details.name}}"></h3>
+<p id="details_of_org" ><textarea style=" border:none;border-width:0px;-webkit-appearance: none; width:300px;" name="description" class="form-control">{{details.description}}</textarea></p>
+<p id="city_of_org" ><strong>City</strong>:<input style="margin-top:-30px; margin-left:40px; border:none;border-width:0px;-webkit-appearance: none;width:110px;" type="text" value="{{details.city}}" name="city" class="form-control"></p>
+<p id="state_of_org"><strong>State</strong>:<input style=" margin-top:-30px; margin-left:45px; border:none;border-width:0px;-webkit-appearance: none;width:120px;" type="text" value="{{details.state}}" name="state" class="form-control"></p>
+<p id="country_of_org" ><strong>Country</strong>:<input style="margin-top:-30px; margin-left:70px; border:none;border-width:0px;-webkit-appearance: none;width:110px;" type="text" value="{{details.country}}" name="country" class="form-control"></p>
+
+{% csrf_token %}
+<div id="update_btn" class="button_action"><button  type="submit" class="btn btn-success">Save</button></div>
+</form> 
+
+
+
+<!-- People -->
+<a style="color:black;border:1px" href="{% url 'create_org:org_members' details.name|slugify %}"><p id="members_visit" ><button type="button" class="btn btn-primary">
+  Members <span class="badge badge-light">{{details.members.count}}</span>
+</button></p></a> 
+
+
+
+<!-- Delete -->
+<button id="delete_org" type="button"  data-toggle="modal" data-target="#confirm_delete" class="btn btn-light"><i class="fa fa-trash" aria-hidden="true"></i>
+</button> 
+
+<div style="margin-top:100px;" class="modal fade" id="confirm_delete" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p style="text-align:center;margin-top:10px;font-weight:bold;">Are you sure you want to delete {{details.name}} </p>
+      </div>
+      <div class="modal-footer">
+        <form method="POST" action="{% url 'create_org:del_org' details.name|slugify %}" >
+            {% csrf_token %}
+        <button id="delete" class="btn btn-primary btn-sm" type="submit">OK</button>   
+            </form>
+        <button data-dismiss="modal" id="delete" class="btn btn-light btn-sm">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Adding Users -->
+<button   id="add_user_modal" type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#add_user">
+  <i class="fa fa-plus mr-1" aria-hidden="true"></i>Add Members
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="add_user" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add User</h5>
+        <h6 class="modal-title" id="exampleModalLongTitle">Total Members : {{details.members.count}}</h6>
+      </div>
+      <div class="modal-body">
+      <h5>Add members to your organisation</h5>
+        <form method="POST" action="{% url 'create_org:add_user' details.name|slugify %}">
+	      {% csrf_token %}
+        <input style="position:relative;" id="member_list" type="text" class="form-control">
+        <input id="member_list_hidden" type="hidden" name="members" value>
+        <div style="height:300px;;" id="members_fetched"></div>
+        
+      </div>
+      <div class="modal-footer">
+        <div  class="button_action"><button  type="submit" class="btn btn-primary">add</button></div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+    </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<hr>
+
+</div>
+
+{% else %}
+
+<div  id="details">
+
+
+{% if details.logo %}
+<img class="logo_unchanged" src="{{details.logo.url}}">
+{% else %}
+{% load static %}
+<img class="logo_unchanged" src="{% static 'piblitz_org/images/org_null.png' %}">
+{% endif %}
+<h3 id="name_unchanged" >{{details.name}}</h3>
+
+<p id="description_unchanged" >{{details.description}}</p>
+<p id="owner" ><strong>Owned by</strong>: {{details.owner}}</p>
+
+<P id="city_unchanged" ><strong>City</strong>: {{details.city}}</p>
+
+<p id="state_unchanged" ><strong>State</strong>: {{details.state}}</p>
+
+<p id="country_unchanged" ><strong>Country</strong>: {{details.country}}</p>  
+
+<p id="members_cnt" ><a href="{% url 'create_org:org_members' details.name|slugify %}"> <button type="button" class="btn btn-primary">
+  Members <span class="badge badge-light">{{details.members.count}}</span>
+</button></a> </p>
+
+
+<hr>
+
+{% endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+
+var logo_as_file = document.getElementById("file")
+function file_upload(){
+   document.getElementById("file").click();
+}
+
+
+ $(document).ready(function (){
+            $("#member_list").keyup(function(){
+                var member_fetch = $(this).val();
+                $("#members_fetched").html('')
+                if(member_fetch!= ''){
+                    $.ajax({
+                        url:'/create_org/fetch_member/' ,
+                        type: 'POST' ,
+                        data: {
+                            query:member_fetch ,
+                            'csrfmiddlewaretoken': "{{ csrf_token }}"
+                        },
+                        success: function(names){
+                          var member_container=document.createElement('ul')
+                          member_container.className="list-group";
+                          $.each(names.member_array , function (key , value) {
+                            var member_list = document.createElement('li');
+                            member_list.className = "list-group-item";
+                            member_list.innerHTML = (value.user_name);
+                            $(member_container).append(member_list);
+                            member_list.onclick = function () {
+                            $("#member_list").val($(this).text());
+                            document.getElementById("member_list_hidden").value=value.user_id;
+                            $("#members_fetched").empty();
+
+                          }
+                          });
+                          $("#members_fetched").append(member_container);
+                            
+            }
+           })
+                        
+        }
+      });
+   });
+
+ var modal_body = document.getElementById('add_user');
+   modal_body.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        document.getElementById("members_fetched").innerHTML='';
+    }, false);
+
+</script>
+
+
+
+
+
+{% endblock %}

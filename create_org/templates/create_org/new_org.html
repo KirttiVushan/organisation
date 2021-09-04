@@ -1,0 +1,112 @@
+
+{% extends 'create_org/base.html' %} 
+
+{% block content %}
+    <br>
+ {% if error %}
+  <div class="container" id="error"   role="alert">
+  <p class="alert alert-danger">Fill up all the necessary details</p>
+  </div>
+ {% endif %}
+    <div id="org_form" class="container" >  
+  <div class="col-md-8">  
+    <h3 style="text-align:center;">Create your organisation</h3>
+    <hr>
+  
+
+    <form method="POST" enctype = "multipart/form-data">
+    <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Name</span>
+    <input type="text" class="form-control" name="name" aria-describedby="basic-addon1" required>
+    </div>
+    <br>
+    <div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Description</span>
+  </div>
+  <textarea class="form-control" name="description" aria-label="With textarea" required></textarea>
+  </div>
+  <br>
+   <!-- Button trigger modal -->
+  <div class="input-group mb-3 ">
+  <div class="input-group-prepend">
+  <span class="input-group-text"><i class="fa fa-location-arrow" aria-hidden="true"></i></span>
+  </div>
+  <input id="location_added" type="text" class="form-control" disabled="" value="No Location" id="location_display">
+  <div class="input-group-append">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus" data-toggle="tooltip" title="Add Location" aria-hidden="true"></i><span class="sr-only">Add Location</span>
+  </button>
+  </div>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div style="margin-left:1px;" class="form-row">
+  <div style="margin-bottom:20px;" class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Country</span>
+    <input id="country_modal" type="text" class="form-control" name="country" aria-describedby="basic-addon1">
+    </div>
+    <br>
+    <div style="margin-right:30px;margin-bottom:20px;" class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">State</span>
+    <input id="country_modal" type="text" class="form-control" name="state" aria-describedby="basic-addon1">
+    </div>
+    <br>
+    <div style="margin-right:30px;margin-bottom:20px;" class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">City</span>
+    <input id="country_modal" type="text" class="form-control" name="city" aria-describedby="basic-addon1">
+    </div>
+    </div>
+    <br>
+  </div>
+  <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="save_location();">Save</button>
+        
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+    <div id="logo_input"  class="custom-file">
+    <input onclick="logo_uploaded();" id="logo_upload" type="file" class="custom-file-input" id="inputGroupFile01" name="logo" aria-describedby="inputGroupFileAddon01">
+    <label class="custom-file-label" for="inputGroupFile01">Logo</label>
+    </div>
+    </div>
+
+    {% csrf_token %} 
+    <div id="org_save_btn"  class="button_action"><button  type="submit" class="btn btn-success">Save</button></div>
+   </form>
+  </div>
+  </div>
+
+  <script>
+  var country_of_organisation =document.getElementById("country_modal");
+  var state_of_organisation =document.getElementById("state_modal");
+  var city_of_organisation =document.getElementById("city_modal");
+ 
+
+ 
+ function save_location(){
+   if(country_of_organisation.value != null || state_of_organisation.value == null || city_of_organisation.value != null){
+   document.getElementById("location_added").value = "Location added"
+  }
+ }
+
+ var org_logo=document.getElementById('logo_upload');
+
+
+  </script>
+
+{% endblock %}
+
+

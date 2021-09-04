@@ -1,0 +1,15 @@
+{% extends 'create_org/base.html' %} 
+
+{% block content %}
+<div style="text-align:center;">
+<p>Are you sure you want to delete {{organisations.name}} </p>
+
+
+<form method="POST" action="{% url 'create_org:del_org' organisations.name|slugify %}" >
+	{% csrf_token %}
+  <button id="delete" class="btn btn-primary" type="submit">OK</button>   
+</form>
+<a href="{% url 'create_org:organisation' organisations.name|slugify %}"><button id="delete" class="btn btn-light">Cancel</button></a>
+</div>
+
+{% endblock %}

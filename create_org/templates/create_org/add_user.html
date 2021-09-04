@@ -1,0 +1,25 @@
+{% extends 'create_org/base.html' %} 
+
+{% block content %}
+
+<div style="width:400px;height:300px;text-align:center;margin-left:450px;" class="form-group">    
+<h3>{{ organisation.name }}</h3>
+<h4>Currently {{organisation.name}} has {{organisation.members.count}} members</h4>
+<form method="POST">
+	{% csrf_token %}
+
+    <label for="members"><p>Please select user's you would like to add in your organisation</p></label>
+	
+    <select name="members" class="form-control" id="exampleFormControlSelect1">	
+    {% for u in user %}
+      <option value="{{u.id}}">{{u.username}}</option>
+	  {% endfor %}
+    </select>  
+    
+	
+  <div style="margin-top:30px;" class="button_action"><button  type="submit" class="btn btn-success">add</button></div>
+</form>
+<div>
+
+
+{% endblock %}

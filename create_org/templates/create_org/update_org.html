@@ -1,0 +1,63 @@
+{% extends 'create_org/base.html' %}
+
+{% block content %}
+   <br>
+{% if error %}
+  <div class="alert alert-danger" role="alert">
+  {{ error }}
+  </div>
+ {% endif %}
+
+
+    
+    <div style="float:right;">  
+  <div class="col-md-8">  
+
+<form method="POST">
+
+  <div class="class="input-group mb-3 input-group-sm""> 
+    <form method="POST" enctype = "multipart/form-data">
+    <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Name</span>
+    <input type="text" class="form-control" value="{{organisations.name}}" name="name" aria-describedby="basic-addon1">
+    </div>
+    <br>
+    <div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Description</span>
+  </div>
+  <textarea class="form-control" name="description"  aria-label="With textarea">{{organisations.description}}</textarea>
+  </div>
+  <br>
+  <div style="margin-left:1px;" class="form-row">
+  <div style="margin-bottom:20px;" class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">Country</span>
+    <input type="text" class="form-control" name="country" value="{{organisations.country}}" aria-describedby="basic-addon1">
+    </div>
+    <div style="margin-right:30px;margin-bottom:20px;" class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">State</span>
+    <input type="text" class="form-control" name="state" value="{{organisations.state}}" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">City</span>
+    <input type="text" class="form-control" name="city" value="{{organisations.city}}" aria-describedby="basic-addon1">
+    </div>
+    </div>
+    <br>
+    <div class="custom-file">
+    <input type="file" class="custom-file-input" id="inputGroupFile01" value="{{organisations.logo}}" name="logo" aria-describedby="inputGroupFileAddon01">
+    <label class="custom-file-label" for="inputGroupFile01">Logo</label>
+  </div>
+  
+	{% csrf_token %}
+  <div style="text-align:center;margin-top:30px;" class="button_action"><button  type="submit" class="btn btn-success">Update</button></div>
+</form>
+</div>
+</div>
+
+
+ 
+
+
+
+{% endblock %} 

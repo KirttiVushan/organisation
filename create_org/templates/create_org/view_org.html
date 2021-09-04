@@ -1,0 +1,22 @@
+{% extends 'create_org/base.html' %} 
+
+{% block content %}
+
+<a href="{% url 'create_org:new_org' %}"><button id="create_org" type="button" class="btn btn-light">Create Organisation</button></a>
+
+<div id="org_results" class="container"  class="organisations">
+ 
+  <h6 style="font-weight:bold; font-size:200%">Total Organisations {{organisations|length}}</h6>   
+  <hr>
+    {% for org in organisations %}   
+    <ul>
+    <li style="list-style:none;"><a href="{% url 'create_org:organisation' org.name|slugify %}">{{org.name}}</a></li>
+    <p>{{org.description}}</p>
+    <hr>
+    </ul>
+    {% endfor %}
+     
+</div>
+      
+       
+{% endblock %}

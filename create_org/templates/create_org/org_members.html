@@ -1,0 +1,215 @@
+{% extends 'create_org/base.html' %} 
+
+{% block content %}
+
+
+{% if request.user == details.owner %}
+
+</div>
+<div class="container" id="update_field_members">
+
+<form method="POST" enctype = "multipart/form-data">
+
+{% if details.logo %}
+    <img class="logo_members_page" src="{{details.logo.url}}" onclick = "file_upload();"><input style="display: none;" type ="file" name="logo" id ="file" value="{{details.logo.url}}">
+{% else %}
+    {% load static %}
+    <img class="logo_members_page"  onclick = "file_upload();" src="{% static 'piblitz_org/images/org_null.png' %}"><input style="display: none;" name="logo" type = "file" id = "file">
+{% endif %}
+
+<h3 id="org_name_members" ><input style=" border:none;border-width:0px;-webkit-appearance:none;width:300px;font-size:25px;" type="text" name="name" class="form-control form-control-lg" value="{{details.name}}"></h3>
+<p id="org_description_members" ><textarea style=" border:none;border-width:0px;-webkit-appearance: none; width:300px;" name="description" class="form-control">{{details.description}}</textarea></p>
+<p id="org_city_members" ><strong>City</strong>:<input style="margin-top:-30px; margin-left:40px; border:none;border-width:0px;-webkit-appearance: none;width:110px;" type="text" value="{{details.city}}" name="city" class="form-control"></p>
+<p id="org_state_members" ><strong>State</strong>:<input style=" margin-top:-30px; margin-left:45px; border:none;border-width:0px;-webkit-appearance: none;width:120px;" type="text" value="{{details.state}}" name="state" class="form-control"></p>
+<p id="org_country_members" ><strong>Country</strong>:<input style="margin-top:-30px; margin-left:70px; border:none;border-width:0px;-webkit-appearance: none;width:110px;" type="text" value="{{details.country}}" name="country" class="form-control"></p>
+
+{% csrf_token %}
+<div id="update_btn_members"  class="button_action"><button  type="submit" class="btn btn-success">Save</button></div>
+</form> 
+<!-- People -->
+<p id="org_members" style="text-decoration:underline"><button type="button" class="btn btn-primary" disabled>
+  Members <span class="badge badge-light">{{details.members.count}}</span>
+</button></p>
+
+
+
+<!-- Delete -->
+<button id="delete_org_members_page" type="button"  data-toggle="modal" data-target="#confirm_delete" class="btn btn-light"><i class="fa fa-trash" aria-hidden="true"></i>
+</button> 
+
+<div  class="modal fade" id="confirm_delete" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p >Are you sure you want to delete {{details.name}} </p>
+      </div>
+      <div class="modal-footer">
+        <form method="POST" action="{% url 'create_org:del_org' details.name|slugify %}" >
+            {% csrf_token %}
+        <button id="delete" class="btn btn-primary btn-sm" type="submit">OK</button>   
+            </form>
+        <button data-dismiss="modal" id="delete" class="btn btn-light btn-sm">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Adding Users -->
+<button id="add_user_modal_members" type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#add_user">
+  <i class="fa fa-plus mr-1" aria-hidden="true"></i>Add Members
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="add_user" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add User</h5>
+        <h6 class="modal-title" id="exampleModalLongTitle">Total Members : {{details.members.count}}</h6>
+      </div>
+      <div class="modal-body">
+      <h5>Add members to your organisation</h5>
+        <form method="POST" action="{% url 'create_org:add_user' details.name|slugify %}">
+	      {% csrf_token %}
+        <input style="position:relative;" id="member_list" name="members" type="text" class="form-control">
+        <input id="member_list_hidden" type="hidden" name="members" value>
+        <div style="height:300px;;" id="members_fetched"></div>
+        
+      </div>
+      <div class="modal-footer">
+        <div  class="button_action"><button  type="submit" class="btn btn-primary">add</button></div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+    </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+<br>
+<h5 style="font-weight:bold ;font-size:150%; margin-left:100px;">Members</strong> :{{details.members.count}} </h5><strong>
+<div class="members_with_role">
+
+<br>
+<table class="table">
+  <thead style="border:1px solid #B3B6B9;" class="thead-light">
+    <tr>
+      <th scope="col">Members</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody style="border:1px solid #B3B6B9;">
+  {% for member in details.members.all %}
+  <form action="{% url 'create_org:del_members' details.name|slugify %}" method="POST">
+      {% csrf_token %}
+    <tr>
+      <td><img  class="dps" src="{% static 'piblitz_org/images/org_null.png' %}" width="50px" height="50px"><strong>{{member}}</strong></td>
+      <input id="member_list_hidden" type="hidden" name="members_id" value={{member.id}}>
+      <td><button type="submt" class="btn btn-danger">Delete</button></td>
+    </tr>
+     </form>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+</div>
+
+{% else %}
+<div id="details_members">
+
+
+{% if details.logo %}
+<img class="logo_unchanged_members"  src="{{details.logo.url}}">
+{% else %}
+{% load static %}
+<img class="logo_unchanged_members"  src="{% static 'piblitz_org/images/org_null.png' %}">
+{% endif %}
+
+<h3 id="name_unchanged_members" >{{details.name}}</h3>
+
+<p id="description_unchanged_members" >{{details.description}}</p>
+<p id="owner_members" ><strong>Owned by</strong>: {{details.owner}}</p>
+
+<P id="city_unchanged_members" ><strong>City</strong>: {{details.city}}</p>
+
+<p id="state_unchanged_members" ><strong>State</strong>: {{details.state}}</p>
+
+<p id="country_unchanged_members" ><strong>Country</strong>: {{details.country}}</p>  
+
+<p id="members_button_members" ><button type="button" class="btn btn-primary" disabled>
+  Members <span class="badge badge-light">{{details.members.count}}</span>
+</button></a> </p>
+<hr>
+<h5><strong>Members</strong> :{{details.members.count}} </h5>
+<div class="container" style="width:550px;" id="details_org">
+
+<ul  class="list-group">
+
+      {% for member in details.members.all %}
+      {% load static %}
+      <li style="margin-right:40px;" class="list-group-item"><img class="dps" src="{% static 'piblitz_org/images/org_null.png' %}" width="50px" height="50px">
+      <strong style="margin-right:40px;">{{member}}</strong>
+      </li>
+      {% endfor %}
+</ul> 
+</div>
+{% endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+
+var logo_as_file = document.getElementById("file")
+function file_upload(){
+   document.getElementById("file").click();
+}
+
+
+ $(document).ready(function (){
+            $("#member_list").keyup(function(){
+                var member_fetch = $(this).val();
+                $("#members_fetched").html('')
+                if(member_fetch!= ''){
+                    $.ajax({
+                        url:'/create_org/fetch_member/' ,
+                        type: 'POST' ,
+                        data: {
+                            query:member_fetch ,
+                            'csrfmiddlewaretoken': "{{ csrf_token }}"
+                        },
+                        success: function(names){
+                          var member_container=document.createElement('ul')
+                          member_container.className="list-group";
+                          $.each(names.member_array , function (key , value) {
+                            var member_list = document.createElement('li');
+                            member_list.className = "list-group-item";
+                            member_list.innerHTML = (value.user_name);
+                            $(member_container).append(member_list);
+                            member_list.onclick = function () {
+                            $("#member_list").val($(this).text());
+                            document.getElementById("member_list_hidden").value=value.user_id;
+                            $("#members_fetched").empty();
+
+                          }
+                          });
+                          $("#members_fetched").append(member_container);
+
+                            
+            }
+          })
+                        
+       }
+     });
+    });
+
+</script>
+
+
+
+
+
+{% endblock %}
+
